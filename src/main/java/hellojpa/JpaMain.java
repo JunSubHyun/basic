@@ -46,16 +46,52 @@ public class JpaMain {
 //            List<Member> result = em.createQuery("select m from Member as m",Member.class)
 //                    .getResultList();
 
-            //페이징추가
-            List<Member> result = em.createQuery("select m from Member as m",Member.class)
-                    .setFirstResult(5)                  //추가 하면 limit 를 자동 추가
-                    .setMaxResults(8)
-                    .getResultList();
+//            //페이징추가
+//            List<Member> result = em.createQuery("select m from Member as m",Member.class)
+//                    .setFirstResult(5)                  //추가 하면 limit 를 자동 추가
+//                    .setMaxResults(8)
+//                    .getResultList();
+//
+//            for(Member member : result){
+//                System.out.println("member.name = " + member.getName());
+//            }
+            
+//            //비영속
+//            Member member = new Member();
+//            member.setId(101L);
+//            member.setName("HelloJPA");
+//
+//            //영속
+//            System.out.println("===BEFORE===");
+//            em.persist(member);
+//            System.out.println("===AFTER===");
+//
+//            Member findMember = em.find(Member.class, 101L);
+//
+//            System.out.println("findMember = " + findMember.getId());
+//            System.out.println("findMember = " + findMember.getName());
 
-            for(Member member : result){
-                System.out.println("member.name = " + member.getName());
-            }
+//            Member findMember1 = em.find(Member.class, 101L);
+//            Member findMember2 = em.find(Member.class, 101L);
+//
+//            //1차 캐시에서 가져오기 때문에 같은 값이 나옴
+//            // result = true
+//            System.out.println("result = "+(findMember1 == findMember2) );
 
+//              //영속
+//              Member member1 = new Member(150L, "A");
+//              Member member2 = new Member(160L, "B");
+//
+//              em.persist(member1);
+//              em.persist(member2);
+//
+//              System.out.println("============================");
+            
+            //수정
+            Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZZ");
+
+            //커밋을 하는 시점에 데이터베이스로 전송(쿼리 실행)
             tx.commit();
         }catch (Exception e){
             tx.rollback();
