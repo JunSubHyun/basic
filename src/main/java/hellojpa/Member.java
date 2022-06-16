@@ -6,17 +6,19 @@ import java.util.Date;
 @Entity
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
 
-
-    @Column(name = "name" ,nullable = false)
+    @Column(name="USERNAME")
     private String username;
 
-    public Member(){
+//    @Column(name="TEAM_ID")
+//    private Long teamId;
 
-    }
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;              //Member 가 N , Team 이 1
 
     public Long getId() {
         return id;
@@ -32,5 +34,23 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+//    public void setTeam(Team team) {
+//        this.team = team;
+//        team.getMembers().add(this);
+//    }
+
+//    public void changeTeam(Team team) {         //관례상 이름을 바꿔 사용
+//        this.team = team;
+//        team.getMembers().add(this);
+//    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

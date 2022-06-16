@@ -107,11 +107,63 @@ public class JpaMain {
 //
 //            System.out.println("====================");
 
-            //엔티티 매핑 실습
+//            //엔티티 매핑 실습
+//            Member member = new Member();
+//            member.setUsername("C");
+//
+//            em.persist(member);
+
+            //단방향 연관관계
+//            Team team = new Team();
+//            team.setName("TeamA");
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setUsername("member1");
+//            member.setTeam(team);
+//
+//            em.persist(member);
+
+            //영속성 컨텍스트를 통한 초기화
+//            em.flush();
+//            em.clear();
+
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            Team findTeam = findMember.getTeam();
+//            System.out.println("findTeam = "+findTeam.getName());
+//
+//            Team newTeam = em.find(Team.class, 100L);
+//            findMember.setTeam(newTeam);
+            
+            //양방향 연관관계
+            Team team = new Team();
+            team.setName("TeamA");
+//            team.getMembers().add(Member);
+            em.persist(team);
+
             Member member = new Member();
-            member.setUsername("C");
+            member.setUsername("member1");
+//            member.changeTeam(team);
 
             em.persist(member);
+
+//            team.getMembers().add(member);
+
+            team.addMember(member);
+
+            em.flush();
+            em.clear();
+
+//            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = em.find(Team.class, team.getId()); //1차 캐시
+            List<Member> members = findTeam.getMembers();
+
+            System.out.println("=====================");
+            for (Member m : members) {
+                System.out.println("m="+m.getUsername());
+            }
+            System.out.println("=====================");
 
             //커밋을 하는 시점에 데이터베이스로 전송(쿼리 실행)
             tx.commit();
