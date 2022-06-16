@@ -98,14 +98,20 @@ public class JpaMain {
 //            em.flush();   //플러시 발생생
             
             //준영속
-            Member member = em.find(Member.class, 150L);
-            member.setName("AAAA");   // 영속 상태
+//            Member member = em.find(Member.class, 150L);
+//            member.setName("AAAA");   // 영속 상태
+//
+//            //em.clear();  -> 영속성 초기화
+//
+//            em.detach(member);  //영속에서 분리 -> 준영속 상태
+//
+//            System.out.println("====================");
 
-            //em.clear();  -> 영속성 초기화
-            
-            em.detach(member);  //영속에서 분리 -> 준영속 상태
+            //엔티티 매핑 실습
+            Member member = new Member();
+            member.setUsername("C");
 
-            System.out.println("====================");
+            em.persist(member);
 
             //커밋을 하는 시점에 데이터베이스로 전송(쿼리 실행)
             tx.commit();
