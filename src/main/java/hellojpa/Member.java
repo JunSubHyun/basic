@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "member")
 public class Member {
 
     @Id @GeneratedValue
@@ -13,12 +14,13 @@ public class Member {
     @Column(name="USERNAME")
     private String username;
 
-//    @Column(name="TEAM_ID")
-//    private Long teamId;
-
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;              //Member 가 N , Team 이 1
+
+//    @Column(name="TEAM_ID")
+//    private Long teamId;
+
 
     public Long getId() {
         return id;
