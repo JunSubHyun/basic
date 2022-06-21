@@ -1,7 +1,9 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -18,9 +20,16 @@ public class Member {
     @JoinColumn(name = "TEAM_ID")
     private Team team;              //Member 가 N , Team 이 1
 
-//    @Column(name="TEAM_ID")
-//    private Long teamId;
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
+//    @ManyToMany
+//    @JoinTable(name = "MEMBER_PRODUCT")
+//    private List<Product> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -41,16 +50,6 @@ public class Member {
     public Team getTeam() {
         return team;
     }
-
-//    public void setTeam(Team team) {
-//        this.team = team;
-//        team.getMembers().add(this);
-//    }
-
-//    public void changeTeam(Team team) {         //관례상 이름을 바꿔 사용
-//        this.team = team;
-//        team.getMembers().add(this);
-//    }
 
     public void setTeam(Team team) {
         this.team = team;

@@ -159,6 +159,7 @@ public class JpaMain {
             Team findTeam = em.find(Team.class, team.getId()); //1차 캐시
             List<Member> members = findTeam.getMembers();
 
+
             System.out.println("=====================");
             for (Member m : members) {
                 System.out.println("m="+m.getUsername());
