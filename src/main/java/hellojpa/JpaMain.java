@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -136,35 +137,61 @@ public class JpaMain {
 //            Team newTeam = em.find(Team.class, 100L);
 //            findMember.setTeam(newTeam);
             
-            //양방향 연관관계
-            Team team = new Team();
-            team.setName("TeamA");
-//            team.getMembers().add(Member);
-            em.persist(team);
+//            //양방향 연관관계
+//            Team team = new Team();
+//            team.setName("TeamA");
+////            team.getMembers().add(Member);
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setUsername("member1");
+////            member.changeTeam(team);
+//
+//            em.persist(member);
+//
+////            team.getMembers().add(member);
+//
+//            team.addMember(member);
+//
+//            em.flush();
+//            em.clear();
+//
+////            Member findMember = em.find(Member.class, member.getId());
+//            Team findTeam = em.find(Team.class, team.getId()); //1차 캐시
+//            List<Member> members = findTeam.getMembers();
+//
+//
+//            System.out.println("=====================");
+//            for (Member m : members) {
+//                System.out.println("m="+m.getUsername());
+//            }
+//            System.out.println("=====================");
+
+//            //상속관계 매핑
+//            Movie movie = new Movie();
+//            movie.setDirector("aaaa");
+//            movie.setActor("bbbb");
+//            movie.setName("바람과함께사라지다");
+//            movie.setPrice(10000);
+//
+//            em.persist(movie);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Movie findMove = em.find(Movie.class, movie.getId());
+//            //스스로 조인에서 가져옴
+//            System.out.println("findMove = "+ findMove);
 
             Member member = new Member();
-            member.setUsername("member1");
-//            member.changeTeam(team);
+            member.setCreatedBy("kim");
+            member.setCreatedDate(LocalDateTime.now());
+            member.setUsername("user1");
 
             em.persist(member);
 
-//            team.getMembers().add(member);
-
-            team.addMember(member);
-
             em.flush();
             em.clear();
-
-//            Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = em.find(Team.class, team.getId()); //1차 캐시
-            List<Member> members = findTeam.getMembers();
-
-
-            System.out.println("=====================");
-            for (Member m : members) {
-                System.out.println("m="+m.getUsername());
-            }
-            System.out.println("=====================");
 
             //커밋을 하는 시점에 데이터베이스로 전송(쿼리 실행)
             tx.commit();
