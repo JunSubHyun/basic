@@ -1,9 +1,8 @@
 package hellojpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import org.hibernate.Hibernate;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -183,15 +182,54 @@ public class JpaMain {
 //            //스스로 조인에서 가져옴
 //            System.out.println("findMove = "+ findMove);
 
-            Member member = new Member();
-            member.setCreatedBy("kim");
-            member.setCreatedDate(LocalDateTime.now());
-            member.setUsername("user1");
+//            Member member = new Member();
+//            member.setCreatedBy("kim");
+//            member.setCreatedDate(LocalDateTime.now());
+//            member.setUsername("user1");
+//
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
 
-            em.persist(member);
+
+//            emMember member = em.find(Member.class, 1L);
+//            printMember(member);
+            
+            //printMemberAndTeam(member);
+
+//            Member member = new Member();
+//            member.setUsername("hello");
+//
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            System.out.println("findMember.id = "+ findMember.getId());
+//            System.out.println("findMember.userName = "+findMember.getUsername());
+
+//            Member findMember = em.getReference(Member.class, member.getId());
+//
+//            System.out.println("findMember.id = "+ findMember.getId());
+//            System.out.println("findMember.userName = "+findMember.getUsername());
+            Member member1 = new Member();
+            member1.setUsername("hello");
+
+            em.persist(member1);
 
             em.flush();
             em.clear();
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("reference = " + refMember.getClass());
+
+            //프록시 초기화 확인 (초기화 됐으면 true)
+//            refMember.getUsername();          // 강제 초기화
+//            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
+
+//            Hibernate.initialize(refMember);        //하이버네이트가 제공하는 강제 초기화
 
             //커밋을 하는 시점에 데이터베이스로 전송(쿼리 실행)
             tx.commit();
@@ -204,4 +242,7 @@ public class JpaMain {
         emf.close();
 
     }
+
+
+
 }
