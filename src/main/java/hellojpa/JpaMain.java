@@ -215,15 +215,15 @@ public class JpaMain {
 //
 //            System.out.println("findMember.id = "+ findMember.getId());
 //            System.out.println("findMember.userName = "+findMember.getUsername());
-            Member member1 = new Member();
-            member1.setUsername("hello");
-
-            em.persist(member1);
-
-            em.flush();
-            em.clear();
-            Member refMember = em.getReference(Member.class, member1.getId());
-            System.out.println("reference = " + refMember.getClass());
+//            Member member1 = new Member();
+//            member1.setUsername("hello");
+//
+//            em.persist(member1);
+//
+//            em.flush();
+//            em.clear();
+//            Member refMember = em.getReference(Member.class, member1.getId());
+//            System.out.println("reference = " + refMember.getClass());
 
             //프록시 초기화 확인 (초기화 됐으면 true)
 //            refMember.getUsername();          // 강제 초기화
@@ -231,10 +231,62 @@ public class JpaMain {
 
 //            Hibernate.initialize(refMember);        //하이버네이트가 제공하는 강제 초기화
 
+            //즉시로딩과 지연로딩
+//            Team team = new Team();
+//            team.setName("teamA");
+//            em.persist(team);
+//
+//            Member member1 = new Member();
+//            member1.setUsername("hello");
+//            member1.setTeam(team);
+//            em.persist(member1);
+//
+//
+//            em.flush();
+//            em.clear();
+//            Member m = em.find(Member.class, member1.getId());
+//
+//            System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass());
+//
+//
+//            System.out.println("==============");
+//            m.getTeam().getName();      //초기화
+//            System.out.println("==============");
+
+            //영속성 전이
+
+//            Child child1 = new Child();
+//            Child child2 = new Child();
+//
+//            Parent parent = new Parent();
+//            parent.addChild(child1);
+//            parent.addChild(child2);
+//
+//            em.persist(parent);
+//            em.persist(child1);           // cascade = CascadeType.ALL 를 선언하여 이걸 선언하지 않아도 Child 에 대한 쿼리가 나감
+//            em.persist(child2);
+
+            //고아 객체
+            Child child1 = new Child();
+            Child child2 = new Child();
+
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, 1L);
+            findParent.getChildList().remove(0);
+
             //커밋을 하는 시점에 데이터베이스로 전송(쿼리 실행)
             tx.commit();
         }catch (Exception e){
             tx.rollback();
+            System.out.println("e = " + e);
         }finally {
             em.close();
         }
