@@ -167,13 +167,13 @@ public class JpaMain {
 //            System.out.println("=====================");
 
 //            //상속관계 매핑
-//            Movie movie = new Movie();
-//            movie.setDirector("aaaa");
-//            movie.setActor("bbbb");
-//            movie.setName("바람과함께사라지다");
-//            movie.setPrice(10000);
-//
-//            em.persist(movie);
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과함께사라지다");
+            movie.setPrice(10000);
+
+            em.persist(movie);
 //
 //            em.flush();
 //            em.clear();
@@ -267,20 +267,20 @@ public class JpaMain {
 //            em.persist(child2);
 
             //고아 객체
-            Child child1 = new Child();
-            Child child2 = new Child();
-
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, 1L);
-            findParent.getChildList().remove(0);
+//            Child child1 = new Child();
+//            Child child2 = new Child();
+//
+//            Parent parent = new Parent();
+//            parent.addChild(child1);
+//            parent.addChild(child2);
+//
+//            em.persist(parent);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Parent findParent = em.find(Parent.class, 1L);
+//            findParent.getChildList().remove(0);
 
             //커밋을 하는 시점에 데이터베이스로 전송(쿼리 실행)
             tx.commit();
