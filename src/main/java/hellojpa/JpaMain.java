@@ -1,6 +1,7 @@
 package hellojpa;
 
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.common.reflection.XMember;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -167,13 +168,13 @@ public class JpaMain {
 //            System.out.println("=====================");
 
 //            //상속관계 매핑
-            Movie movie = new Movie();
-            movie.setDirector("aaaa");
-            movie.setActor("bbbb");
-            movie.setName("바람과함께사라지다");
-            movie.setPrice(10000);
-
-            em.persist(movie);
+//            Movie movie = new Movie();
+//            movie.setDirector("aaaa");
+//            movie.setActor("bbbb");
+//            movie.setName("바람과함께사라지다");
+//            movie.setPrice(10000);
+//
+//            em.persist(movie);
 //
 //            em.flush();
 //            em.clear();
@@ -283,6 +284,33 @@ public class JpaMain {
 //            findParent.getChildList().remove(0);
 
             //커밋을 하는 시점에 데이터베이스로 전송(쿼리 실행)
+
+            //임베디드 타입
+//            Member member = new Member();
+//            member.setUsername("hello");
+//            member.setHomeAddress(new Address("city","street","10000"));
+//            member.setWorkPeriod(new Period());
+//
+//            em.persist(member);
+
+            Address address = new Address("city","street","10000");
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(address);
+            em.persist(member);
+
+            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setHomeAddress(copyAddress);
+            em.persist(member2);
+
+            member.getHomeAddress().setCity("newCity");
+
+            member.getHomeAddress().setCity("newCity");
+
             tx.commit();
         }catch (Exception e){
             tx.rollback();
