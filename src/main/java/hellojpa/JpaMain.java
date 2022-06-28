@@ -1,11 +1,16 @@
 package hellojpa;
 
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.common.reflection.XMember;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String args[]) {
@@ -293,23 +298,79 @@ public class JpaMain {
 //
 //            em.persist(member);
 
-            Address address = new Address("city","street","10000");
+//            Address address = new Address("city","street","10000");
+//
+//            Member member = new Member();
+//            member.setUsername("member1");
+//            member.setHomeAddress(address);
+//            em.persist(member);
+//
+//            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+//
+//            Member member2 = new Member();
+//            member2.setUsername("member2");
+//            member2.setHomeAddress(copyAddress);
+//            em.persist(member2);
+//
+//            member.getHomeAddress().setCity("newCity");
+//
+//            member.getHomeAddress().setCity("newCity");
 
+            //값 타입 컬렉션
             Member member = new Member();
             member.setUsername("member1");
-            member.setHomeAddress(address);
+            member.setHomeAddress(new Address("homeCity","street","1000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
+
+            member.getAddressHistory().add(new Address("old1","street","1000"));
+            member.getAddressHistory().add(new Address("old2","street","1000"));
+
             em.persist(member);
 
-            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+            em.flush();
+            em.clear();
 
-            Member member2 = new Member();
-            member2.setUsername("member2");
-            member2.setHomeAddress(copyAddress);
-            em.persist(member2);
+            System.out.println("=====================START=============================");
+            Member findMember = em.find(Member.class, member.getId());
 
-            member.getHomeAddress().setCity("newCity");
+//            List<Address> addressHistory = findMember.getAddressHistory();
+//            for (Address address : addressHistory) {
+//                System.out.println("address.getCity() = " + address.getCity());
+//            }
+//
+//            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+//            for (String favoriteFood : favoriteFoods) {
+//                System.out.println("favoriteFood = " + favoriteFood);
+//            }
 
-            member.getHomeAddress().setCity("newCity");
+            //homeCity -> newCity
+//            Address a = findMember.getHomeAddress();
+//            findMember.setHomeAddress(new Address("newCity",a.getStreet(),a.getZipcode()));
+
+            //치킨 -> 한식 (컬렉션 수정)
+//            findMember.getFavoriteFoods().remove("치킨");
+//            findMember.getFavoriteFoods().add("한식");
+
+//            //완전 똑같은걸 넣어서 지워준다
+//            findMember.getAddressHistory().remove(new Address("old1","street","1000"));
+//            findMember.getAddressHistory().add(new Address("newCity1","street","1000"));
+//
+//             //JPQL
+//            em.createQuery(
+//                    "select m From Member m where m.username like '%kim%'",Member.class
+//            ).getResultList();
+
+            //Criteria
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+//
+//            Root<Member> m = query.from(Member.class);
+//
+//            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"),"kim"));
+//            List<Member> resultList = em.createQuery(cq).getResultList();
 
             tx.commit();
         }catch (Exception e){
